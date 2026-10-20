@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.openfinance-tech/mcp",
+  "name": "tech.openfinance/trading",
   "title": "OpenFinance — Easy Trading: Crypto, Stocks, Perps & Prediction Markets",
   "description": "Easy trading for AI agents: crypto, perps, stocks, prediction markets, forex and memecoins. One URL.",
   "version": "1.0.0",
