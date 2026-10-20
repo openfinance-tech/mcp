@@ -1,8 +1,8 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.openfinance-tech/mcp",
-  "title": "OpenFinance",
-  "description": "Trading MCP for AI agents: crypto, perps, stocks, prediction markets, forex and memecoins.",
+  "title": "OpenFinance — Easy Trading: Crypto, Stocks, Perps & Prediction Markets",
+  "description": "Easy trading for AI agents: crypto, perps, stocks, prediction markets, forex and memecoins. One URL.",
   "version": "1.0.0",
   "websiteUrl": "https://openfinance.tech/agents",
   "repository": {
@@ -13,7 +13,9 @@
     {
       "src": "https://openfinance.tech/logo.png",
       "mimeType": "image/png",
-      "sizes": ["1024x1024"]
+      "sizes": [
+        "1024x1024"
+      ]
     }
   ],
   "remotes": [

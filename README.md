@@ -7,7 +7,8 @@
 <h1 align="center">OpenFinance MCP Server</h1>
 
 <p align="center">
-  <b>Give any AI agent the ability to research, trade and move money across every major market, through one remote MCP connection.</b>
+  <b>The easiest way to let your AI agent trade.</b><br />
+  Research, trade and move money across every major market through one remote MCP connection. No install, no keys to juggle.
 </p>
 
 <p align="center">
@@ -66,6 +67,8 @@ https://api.openfinance.tech/agent/mcp
 - [Links](#links)
 
 ## Quick start
+
+Easy trading for your agent in under a minute.
 
 **1. Create your account.** Sign in at [openfinance.tech](https://openfinance.tech). Your trading wallets (one EVM address for every EVM chain, plus a Solana address) are created for you.
 
