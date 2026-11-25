@@ -7,8 +7,8 @@
 <h1 align="center">OpenFinance MCP Server</h1>
 
 <p align="center">
-  <b>The easiest way to let your AI agent trade.</b><br />
-  Research, trade and move money across every major market through one remote MCP connection. No install, no keys to juggle.
+  <b>A trading MCP server for AI agents.</b><br />
+  Research and trade crypto, stocks, prediction markets, forex and memecoins through one remote MCP connection. Nothing to install.
 </p>
 
 <p align="center">
@@ -17,7 +17,6 @@
   <a href="#tool-reference"><img alt="18 tools, 100+ actions" src="https://img.shields.io/badge/Tools-18_tools_%C2%B7_100%2B_actions-111111?style=flat-square" /></a>
   <a href="https://docs.openfinance.tech"><img alt="Docs" src="https://img.shields.io/badge/Docs-docs.openfinance.tech-2563eb?style=flat-square" /></a>
   <a href="https://x.com/openfinancelabs"><img alt="Follow on X" src="https://img.shields.io/badge/X-@openfinancelabs-000000?style=flat-square&logo=x" /></a>
-  <a href="https://discord.gg/6EA3z4HjSe"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join-5865F2?style=flat-square&logo=discord&logoColor=white" /></a>
 </p>
 
 <p align="center">
@@ -30,7 +29,7 @@
 
 ---
 
-The OpenFinance MCP server supercharges AI agents with trading skills. Connect Claude, ChatGPT, Cursor, Codex or any MCP client and your agent can:
+The OpenFinance MCP server gives AI agents trading tools. Connect Claude, ChatGPT, Cursor, Codex or any MCP client and your agent can:
 
 - **Trade crypto spot and perpetuals** on Hyperliquid, with limit, market and TWAP orders, leverage and margin control.
 - **Trade stocks, indices, commodities, forex and pre-IPO names** as Hyperliquid HIP-3 perps (for example `xyz:NVDA`).
@@ -47,7 +46,7 @@ https://api.openfinance.tech/agent/mcp
 ```
 
 > [!IMPORTANT]
-> This server can place real orders and move real funds. Every write action is designed to ask you first, and you should keep your client's tool-approval prompts switched on. Read [Safety and security](#safety-and-security) before you trade.
+> This server can place real orders and move real funds between your own wallets. It can't send funds to anyone else's address. Every write action is designed to ask you first, and you should keep your client's tool-approval prompts switched on. Read [Safety and security](#safety-and-security) before you trade.
 
 ## Contents
 
@@ -68,7 +67,7 @@ https://api.openfinance.tech/agent/mcp
 
 ## Quick start
 
-Easy trading for your agent in under a minute.
+Connect your agent in under a minute.
 
 **1. Create your account.** Sign in at [openfinance.tech](https://openfinance.tech). Your trading wallets (one EVM address for every EVM chain, plus a Solana address) are created for you.
 
@@ -105,10 +104,10 @@ Using a different client? See [Install in your AI client](#install-in-your-ai-cl
 
 | Chain | Read | Trade, swap, send | Notes |
 |---|:-:|:-:|---|
-| Hyperliquid L1 | ✅ | ✅ | Perps, spot, HIP-3 and HIP-4 markets; funded with USDC from Arbitrum |
+| Hyperliquid L1 | ✅ | ✅ | Perps, spot, HIP-3 and HIP-4 markets; funded with USDC bridged through Relay |
 | Ethereum | ✅ | ✅ | |
 | Base | ✅ | ✅ | |
-| Arbitrum | ✅ | ✅ | Hyperliquid deposits and withdrawals settle here |
+| Arbitrum | ✅ | ✅ | Hyperliquid withdrawals settle here |
 | Polygon | ✅ | ✅ | Polymarket settles here |
 | Optimism, BNB Chain, Avalanche, Linea, Blast, Scroll, zkSync, Zora | ✅ | ✅ | Transfers and Relay swaps |
 | Robinhood Chain (4663) | ✅ | ✅ | OpenFinance token launches and tokenized-stock pairs |
@@ -132,7 +131,7 @@ Every call to the server is authenticated. You can sign in two ways; both act on
 **API key.** Sign in at [openfinance.tech](https://openfinance.tech), open **External AI** in the sidebar, and copy the API key shown under **Connect OpenFinance to your AI**. Keys start with `open_`.
 
 > [!WARNING]
-> **Treat your API key like a password.** It carries the same permissions as your account, including placing trades and sending funds from your wallets. Keep it in an environment variable or your client's secret prompt, never in a file you commit, and never paste it into a shared chat. If it leaks, replace it straight away.
+> **Treat your API key like a password.** Anyone who has it can place trades and move funds between your own wallets. It can't send funds to anyone else's address: that needs your sign-in on openfinance.tech and a code from your authenticator app. A leaked key can still lose you money through bad trades, including trades into tokens someone else controls, so keep it in an environment variable or your client's secret prompt, never in a file you commit, and never paste it into a shared chat. If it leaks, replace it straight away.
 
 The examples below read the key from an environment variable:
 
@@ -506,7 +505,7 @@ asyncio.run(main())
 
 ### Trading venues
 
-<details>
+<details open>
 <summary><b><code>hyperliquid</code></b>: perps, spot, HIP-3 markets (stocks, FX, commodities, indices, pre-IPO), HIP-4 outcomes · 34 actions</summary>
 
 | Group | Actions |
@@ -519,11 +518,11 @@ asyncio.run(main())
 | Funds | ✍️ `withdraw_to_arbitrum`, ✍️ `set_user_abstraction` |
 | Outcomes (HIP-4) | ✍️ `split_outcome`, ✍️ `merge_outcome`, ✍️ `merge_question`, ✍️ `negate_outcome` |
 
-Fund your Hyperliquid account by sending USDC on Arbitrum to the address from `get_deposit_address`. Withdrawals go back to the same address on Arbitrum.
+To fund your Hyperliquid account, ask your agent to bridge USDC through Relay (`relay_get_quote`, then `relay_execute`) to Hyperliquid (chain `1337`), with the address from `hyperliquid` → `get_deposit_address` as the recipient. Withdrawals go back to your own address on Arbitrum.
 
 </details>
 
-<details>
+<details open>
 <summary><b><code>polymarket</code></b>: prediction markets, odds, positions, leaderboards · 32 actions</summary>
 
 | Group | Actions |
@@ -548,7 +547,7 @@ Polymarket orders settle from your Polymarket deposit wallet, not your main wall
 | `relay_get_status` | Check a Relay transfer by its request ID | |
 | `onchain_jupiter_order` | Quote a Solana swap through Jupiter | |
 | `onchain_jupiter_execute` | Execute a Jupiter swap | ✍️ |
-| `onchain_send_token` | Send any token to any address on the same chain (EVM or Solana) | ✍️ |
+| `onchain_send_token` | Send a token between your own wallets on the same chain (EVM or Solana). Any other recipient is refused | ✍️ |
 
 ### Wallet and market data
 
@@ -563,28 +562,28 @@ Polymarket orders settle from your Polymarket deposit wallet, not your main wall
 
 ### Token launches
 
-<details>
+<details open>
 <summary><b><code>openfinance-launchpad-wrapper</code></b>: launch on Robinhood Chain with a fee module (keep, burn, split, raffle or pay holders) · 11 actions</summary>
 
 ✍️ `launch`, `simulate_launch`, `list_launches`, `get_launch`, `get_funding`, `list_creator_launches`, `get_raffle`, `get_raffle_claims`, `list_raffle_stocks`, `get_readiness`, `get_keeper_status`
 
 </details>
 
-<details>
+<details open>
 <summary><b><code>openfinance-launchpad-v4</code></b>: launch on Robinhood Chain as a Uniswap V4 position · 14 actions</summary>
 
 ✍️ `launch`, ✍️ `buy`, ✍️ `sell`, ✍️ `graduate`, ✍️ `claim_fees`, `list_launches`, `get_readiness`, `list_quote_assets`, `get_pair_terms`, `get_pool`, `get_market`, `get_candles`, `get_quote`, `get_fees`
 
 </details>
 
-<details>
+<details open>
 <summary><b><code>openfinance-launchpad</code></b>: launch on Solana with a bonding curve that graduates to an AMM · 11 actions</summary>
 
 ✍️ `launch_token`, ✍️ `buy`, ✍️ `sell`, ✍️ `migrate`, ✍️ `claim_creator_fees`, `list_tokens`, `get_pool_state`, `quote_buy`, `quote_sell`, `get_pool_fees`, `get_creator_fees`
 
 </details>
 
-<details>
+<details open>
 <summary><b><code>openfinance-pons-launch</code></b>: launch terms, quote assets (including tokenized stocks) and fees for Pons launches · 8 actions</summary>
 
 `list_quote_assets`, `get_launch_terms`, `list_tokens`, `get_claimable_fees`, ✍️ `enable_holder_fee_sharing`, ✍️ `sweep_fees`, ✍️ `claim_fees`, ✍️ `launch_token` (legacy; new launches use `openfinance-launchpad-wrapper`)
@@ -607,7 +606,7 @@ Polymarket orders settle from your Polymarket deposit wallet, not your main wall
 - *"Show my open Hyperliquid positions with entry price, PnL and liquidation price."*
 - *"What are my open Polymarket positions and my PnL this week?"*
 
-**Trading** (your agent will show you a summary and wait for your yes)
+**Trading** (your agent will show you a summary and wait for your go-ahead, such as replying "confirm")
 
 - *"Long 0.01 BTC on Hyperliquid at 5x with a limit at 2% below the current price."*
 - *"Buy $25 of YES on the leading Polymarket outcome for the Champions League final."*
@@ -624,8 +623,8 @@ Polymarket orders settle from your Polymarket deposit wallet, not your main wall
 
 **How write actions work.** OpenFinance creates your trading wallets when you sign up. When your agent calls a write action (✍️ above), the server signs and submits it from your account. To keep you in control:
 
-- **Every write tool tells the agent to confirm with you first.** The agent should quote or preview, show you the tokens, amounts, chains, fees and recipient, and wait for your explicit yes in the current conversation.
-- **Transfers to outside addresses get an extra warning.** If the recipient isn't one of your own wallets, the agent must show a clear external-transfer warning before it sends anything.
+- **Write tools tell the agent to confirm with you first.** The agent should quote or preview, show you the tokens, amounts, chains, fees and recipient, and wait for your explicit go-ahead, such as replying "confirm", in the current conversation.
+- **Funds only move between your own wallets.** The server refuses any send, bridge, swap or withdrawal to an address that isn't one of your wallets (your EVM and Solana wallets, your Polymarket deposit wallet, and your own Arbitrum address for Hyperliquid withdrawals). To send to someone else, use the Wallet page on openfinance.tech, which asks for a code from your authenticator app.
 - **Keep your client's approval prompts on.** Most clients can ask before each tool call. Leave that on for OpenFinance, and don't add its tools to an auto-approve list. It's your second check if a model ever skips a confirmation.
 
 **Protecting your account**
@@ -686,7 +685,8 @@ Choose **Streamable HTTP**, enter the URL, and sign in or add the `x-api-key` he
 | Sign-in page says there's no API key on the account | Open [openfinance.tech](https://openfinance.tech) once while signed in so your key is created, then retry. |
 | Tools don't appear after editing config | Most clients only read MCP config at startup. Fully quit and reopen, or use the client's reload-servers command. |
 | `429 Too Many Requests` | You've hit a rate limit. Slow your agent down, then retry. |
-| A Polymarket order is rejected for funds | Polymarket trades from your deposit wallet. Ask your agent for `get_deposit_wallet` and fund that address. |
+| A Polymarket order is rejected for funds | Polymarket trades from your deposit wallet. Ask your agent for `get_deposit_wallet` and fund that address with pUSD on Polygon only; funds sent on the wrong network or as the wrong token can't be recovered. |
+| A send, bridge or withdrawal fails with `403 EXTERNAL_RECIPIENT_NOT_ALLOWED` | Agents can only move funds between your own wallets. To send to someone else, use the Wallet page on openfinance.tech with a code from your authenticator app. |
 | A Solana swap fails with `412` | Your Solana wallet needs to be enabled for agent trading first. Follow the instructions in the error. |
 | The agent says you hold nothing | Holdings are per chain. Ask it to check every chain, including Robinhood Chain (4663) for OpenFinance launches. |
 
@@ -709,7 +709,14 @@ Any client that supports remote MCP servers over Streamable HTTP, including Clau
 <details>
 <summary><b>Can my agent trade without asking me?</b></summary>
 
-Every write tool instructs the agent to show a summary and wait for your explicit confirmation, and your client's approval prompts add a second check. Keep both on. Whether an agent follows instructions ultimately depends on the model and client, so stay in the loop for anything that moves money.
+Write tools instruct the agent to show a summary and wait for your explicit go-ahead, such as replying "confirm", and your client's approval prompts add a second check. Keep both on. Whether an agent follows instructions ultimately depends on the model and client, so stay in the loop for anything that moves money.
+
+</details>
+
+<details>
+<summary><b>Can someone with my API key take my money?</b></summary>
+
+Not to their own address. A key can trade and move funds between your own wallets only; sending to anyone else needs your sign-in on openfinance.tech and a code from your authenticator app. It can still trade, and a bad trade, such as buying a token the attacker controls, can lose money to them. There are no server-side trade limits, so keep the key private, fund only what you're willing to risk, and replace it on the **External AI** page if it leaks.
 
 </details>
 
@@ -723,7 +730,7 @@ Your OpenFinance account. The same wallets are used in the OpenFinance app and o
 <details>
 <summary><b>How do I fund my account?</b></summary>
 
-Send crypto to your wallet address (ask your agent for `get_wallet_addresses`), or ask for a fiat on-ramp link with `get_onramp_url`. Hyperliquid and Polymarket each have their own deposit address; your agent can fetch both.
+Send crypto to your wallet address (ask your agent for `get_wallet_addresses`), or ask for a fiat on-ramp link with `get_onramp_url`. Hyperliquid and Polymarket each have their own deposit address; your agent can fetch both. Send only pUSD on Polygon to your Polymarket deposit wallet.
 
 </details>
 
@@ -740,8 +747,9 @@ The MCP server is the live tool layer: prices, orders, transfers. Skills are pla
 - **Connect your agent:** [openfinance.tech/agents](https://openfinance.tech/agents)
 - **Docs:** [docs.openfinance.tech](https://docs.openfinance.tech) · [llms.txt](https://docs.openfinance.tech/llms.txt)
 - **Skills:** [openfinance-tech/skills](https://github.com/openfinance-tech/skills)
+- **Security and permissions:** [openfinance.tech/security](https://openfinance.tech/security) · [Facts](https://openfinance.tech/facts)
+- **Glama listing:** [glama.ai/mcp/servers/openfinance-tech/mcp](https://glama.ai/mcp/servers/openfinance-tech/mcp)
 - **X:** [@openfinancelabs](https://x.com/openfinancelabs)
-- **Discord:** [discord.gg/6EA3z4HjSe](https://discord.gg/6EA3z4HjSe)
 
 ## Disclaimer
 

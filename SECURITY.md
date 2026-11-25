@@ -18,6 +18,7 @@ Please don't access other people's accounts or funds, run load tests against pro
 
 - `https://api.openfinance.tech/agent/mcp` and its OAuth sign-in and consent flow
 - Tool behaviour that could move funds or place orders without the user's confirmation
+- Any way to send funds to an address that isn't one of the user's own wallets
 - Tool descriptions or responses that could steer an agent into an unsafe action
 - Anything that exposes another user's data, keys or wallets
 
