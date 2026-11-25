@@ -473,26 +473,36 @@ pip install mcp
 ```
 
 ```python
-import asyncio, os
+import asyncio, contextlib, os
 from mcp import ClientSession
-from mcp.client.streamable_http import streamablehttp_client
 
 URL = "https://api.openfinance.tech/agent/mcp"
+HEADERS = {"x-api-key": os.environ["OPENFINANCE_API_KEY"]}
 
 async def main():
-    headers = {"x-api-key": os.environ["OPENFINANCE_API_KEY"]}
-    async with streamablehttp_client(URL, headers=headers) as (read, write, _):
-        async with ClientSession(read, write) as session:
-            await session.initialize()
-            tools = await session.list_tools()
-            print([t.name for t in tools.tools])
+    async with contextlib.AsyncExitStack() as stack:
+        try:  # mcp 2.x
+            import httpx2
+            from mcp.client.streamable_http import streamable_http_client
+            http = await stack.enter_async_context(httpx2.AsyncClient(headers=HEADERS, timeout=httpx2.Timeout(30, read=300)))
+            streams = await stack.enter_async_context(streamable_http_client(URL, http_client=http))
+        except ImportError:  # mcp 1.x
+            from mcp.client.streamable_http import streamablehttp_client
+            streams = await stack.enter_async_context(streamablehttp_client(URL, headers=HEADERS))
 
-            # Read-only: mid prices for every Hyperliquid market
-            mids = await session.call_tool("hyperliquid", {"action": "get_all_mids"})
-            print(mids.content)
+        session = await stack.enter_async_context(ClientSession(streams[0], streams[1]))
+        await session.initialize()
+        tools = await session.list_tools()
+        print([t.name for t in tools.tools])
+
+        # Read-only: mid prices for every Hyperliquid market
+        mids = await session.call_tool("hyperliquid", {"action": "get_all_mids"})
+        print(mids.content)
 
 asyncio.run(main())
 ```
+
+Works with both `mcp` 1.x and 2.x (2.x renamed the HTTP client and takes headers through an `httpx2` client).
 
 </details>
 
