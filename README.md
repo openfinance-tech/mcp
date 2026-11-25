@@ -20,6 +20,11 @@
 </p>
 
 <p align="center">
+  <a href="https://glama.ai/mcp/connectors/tech.openfinance/trading"><img alt="Glama score for the OpenFinance MCP connector" src="https://glama.ai/mcp/connectors/tech.openfinance/trading/badges/score.svg" /></a>
+  <a href="https://github.com/punkpeye/awesome-remote-mcp-servers"><img alt="Listed in Awesome Remote MCP Servers" src="https://awesome.re/mentioned-badge.svg" /></a>
+</p>
+
+<p align="center">
   <a href="https://cursor.com/en/install-mcp?name=openfinance-tech&config=eyJ1cmwiOiJodHRwczovL2FwaS5vcGVuZmluYW5jZS50ZWNoL2FnZW50L21jcCJ9"><img alt="Add to Cursor" src="https://cursor.com/deeplink/mcp-install-dark.svg" height="32" /></a>
   &nbsp;
   <a href="https://insiders.vscode.dev/redirect/mcp/install?name=openfinance-tech&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fapi.openfinance.tech%2Fagent%2Fmcp%22%7D"><img alt="Install in VS Code" src="https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white" height="32" /></a>
@@ -78,6 +83,12 @@ claude mcp add --transport http openfinance-tech https://api.openfinance.tech/ag
 ```
 
 **3. Sign in and approve.** The first time your agent uses the server, your client opens an OpenFinance sign-in page. Approve the connection on the consent screen and you're done.
+
+**Using Claude Code, Cursor or Codex?** Install the skills at the same time, so the agent knows how to size a perp, read a Polymarket book, or check a memecoin before it trades:
+
+```bash
+npx skills add openfinance-tech/skills -y
+```
 
 Then ask your agent something like:
 
