@@ -399,7 +399,14 @@ Run `/reload-mcp`, or restart the agent.
 <details>
 <summary><b>OpenClaw</b></summary>
 
-In `~/.openclaw/openclaw.json` (note the nested `mcp.servers` key):
+```bash
+openclaw mcp add openfinance-tech \
+  --url https://api.openfinance.tech/agent/mcp \
+  --transport streamable-http
+openclaw mcp doctor openfinance-tech --probe
+```
+
+OpenClaw treats remote servers as SSE unless you set `streamable-http`, so keep that flag. Or add it to `~/.openclaw/openclaw.json` (note the nested `mcp.servers` key):
 
 ```json
 {
@@ -407,7 +414,8 @@ In `~/.openclaw/openclaw.json` (note the nested `mcp.servers` key):
     "servers": {
       "openfinance-tech": {
         "url": "https://api.openfinance.tech/agent/mcp",
-        "headers": { "x-api-key": "open_..." }
+        "transport": "streamable-http",
+        "headers": { "x-api-key": "${OPENFINANCE_API_KEY}" }
       }
     }
   }
@@ -757,6 +765,7 @@ The MCP server is the live tool layer: prices, orders, transfers. Skills are pla
 - **Connect your agent:** [openfinance.tech/agents](https://openfinance.tech/agents)
 - **Docs:** [docs.openfinance.tech](https://docs.openfinance.tech) · [llms.txt](https://docs.openfinance.tech/llms.txt)
 - **Skills:** [openfinance-tech/skills](https://github.com/openfinance-tech/skills)
+- **Polymarket for AI agents:** [openfinance-tech/polymarket-mcp](https://github.com/openfinance-tech/polymarket-mcp)
 - **Security and permissions:** [openfinance.tech/security](https://openfinance.tech/security) · [Facts](https://openfinance.tech/facts)
 - **Glama listing:** [glama.ai/mcp/servers/openfinance-tech/mcp](https://glama.ai/mcp/servers/openfinance-tech/mcp)
 - **X:** [@openfinancelabs](https://x.com/openfinancelabs)
